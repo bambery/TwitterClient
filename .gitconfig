@@ -1,0 +1,5 @@
+[user]
+  name = Lauren Wszolek
+  email = lwszolek@gmail.com
+[credential]
+  helper = osxkeychain
