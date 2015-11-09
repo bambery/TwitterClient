@@ -34,14 +34,22 @@ public class TwitterClient extends OAuthBaseClient {
 	}
 
     // get the hotel timeline
-    public void getHomeTimeline(AsyncHttpResponseHandler handler) {
+    private void getHomeTimeline(long lastTweetId, AsyncHttpResponseHandler handler ) {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         // specify params
         RequestParams params = new RequestParams();
         params.put("count", 25); // grab 25 tweets
-        params.put("since_id", 1); // oldest id of tweet to grab
+        params.put("since_id", lastTweetId); // oldest id of tweet to grab
         //execute request
         getClient().get(apiUrl, params, handler);
+    }
+
+    public void getInitialHomeTimeline(AsyncHttpResponseHandler handler){
+        getHomeTimeline(1, handler);
+    }
+
+    public void getLatestTweetsSince( long lastTweetId, AsyncHttpResponseHandler handler){
+        getHomeTimeline(lastTweetId, handler);
     }
 
     //composing a tweet
