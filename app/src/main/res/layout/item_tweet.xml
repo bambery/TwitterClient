@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:weightSum="1"
+                android:padding="10dp">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/ivProfileImage"
+        android:background="#826969"
+        android:layout_marginRight="@dimen/tweet_values_right_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Billy"
+        android:id="@+id/tvUsername"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_alignTop="@+id/ivProfileImage"
+        android:maxLines="1"
+        android:layout_marginRight="@dimen/tweet_values_right_margin"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New Texty stuff"
+        android:id="@+id/tvBody"
+        android:layout_below="@+id/tvUsername"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="\@something"
+        android:id="@+id/tvScreenName"
+        android:layout_above="@+id/tvBody"
+        android:layout_toRightOf="@+id/tvUsername"
+        android:layout_toEndOf="@+id/tvUsername"
+        android:maxLines="1"/>
+
+</RelativeLayout>
