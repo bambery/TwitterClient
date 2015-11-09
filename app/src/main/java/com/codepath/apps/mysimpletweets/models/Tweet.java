@@ -7,7 +7,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Tweet {
     private String body;
@@ -28,7 +31,7 @@ public class Tweet {
     }
 
     public String getCreatedAt() {
-        return createdAt;
+        return getRelativeTimeAgo(createdAt);
     }
 
     // Deserialize the JSON
@@ -64,4 +67,28 @@ public class Tweet {
         }
         return tweets;
     }
+
+    // getRelativeTimeAgo("Mon Apr 01 21:16:23 +0000 2014");
+    // returns 12m if posted 12 minutes ago
+    public String getRelativeTimeAgo(String rawJsonDate) {
+        String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+        SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+        TimeFormatter tf = new TimeFormatter();
+        sf.setLenient(true);
+
+        String relativeDate = "";
+        try {
+            long dateMillis = sf.parse(rawJsonDate).getTime();
+            long timeNow = System.currentTimeMillis();
+            long timeElapsed = timeNow - dateMillis;
+        //    relativeDate = DateUtils.getRelativeTimeSpanString(dateMillis,
+        //                                                              System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS).toString();
+            relativeDate = tf.format(timeElapsed);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return relativeDate;
+    }
+
 }

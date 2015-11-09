@@ -42,4 +42,13 @@
         android:layout_toEndOf="@+id/tvUsername"
         android:maxLines="1"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="24m"
+        android:id="@+id/tvTimeSince"
+        android:layout_alignTop="@+id/tvScreenName"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
 </RelativeLayout>

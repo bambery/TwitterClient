@@ -33,10 +33,14 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
         TextView tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
+        TextView tvTimeSince = (TextView) convertView.findViewById(R.id.tvTimeSince);
         // 4. populate data into the subviews
         tvUsername.setText(tweet.getUser().getName());
         tvBody.setText(tweet.getBody());
+        // I feel like the User class should handle its display logic but I don't know how to access
+        // strings.xml without passing in a context, which seems hacky.
         tvScreenName.setText(getContext().getString(R.string.at_sign) + tweet.getUser().getScreenName());
+        tvTimeSince.setText(tweet.getCreatedAt());
         ivProfileImage.setImageResource(android.R.color.transparent); // good place to set a placeholder while clearing out the old content
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
         // 5. return the view to be inserted into the list
