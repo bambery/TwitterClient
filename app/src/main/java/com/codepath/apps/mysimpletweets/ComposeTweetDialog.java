@@ -17,6 +17,10 @@ import com.squareup.picasso.Picasso;
 
 public class ComposeTweetDialog extends DialogFragment {
 
+    // rounded button: http://android--code.blogspot.com/2015/01/android-rounded-corners-button.html
+    // dialog doc: http://developer.android.com/reference/android/support/v4/app/DialogFragment.html#setStyle(int, int)
+
+
     private ImageView ivProfilePhoto;
     private Button btnNewTweet;
     private TextView tvUsername;
@@ -38,6 +42,7 @@ public class ComposeTweetDialog extends DialogFragment {
         return frag;
     }
 
+    // get rid of title bar for now
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
