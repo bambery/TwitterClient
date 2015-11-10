@@ -6,7 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -36,10 +38,20 @@ public class TimelineActivity extends AppCompatActivity {
         // set custom toolbar
         myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         myToolbar.setTitle(R.string.title_activity_timeline);
-
         myToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
         myToolbar.inflateMenu(R.menu.action_bar_timeline);
-
+        // launch compose tweet activity if button is clicked
+        myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.action_new_tweet) {
+                    Toast.makeText(TimelineActivity.this, "Toasty", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
         //setSupportActionBar(myToolbar);
 
         //create the arraylist from data source
