@@ -47,8 +47,10 @@
                     android:host="cpsimpletweets"/>
             </intent-filter>
         </activity>
+        <!--
         <activity android:name=".TimelineActivity" >
         </activity>
+        -->
     </application>
 
 </manifest>

@@ -36,6 +36,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        client = TwitterApplication.getRestClient(); // singleton client
         setContentView(R.layout.activity_timeline);
         // set custom toolbar
         setupMyToolbar();
@@ -46,7 +47,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         aTweets = new TweetsArrayAdapter(this, tweets);
 
         //get client
-        client = TwitterApplication.getRestClient(); // singleton client
+
         lvTweets = (ListView) findViewById(R.id.lvTweets);
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
             @Override
@@ -70,7 +71,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
     @Override
     public void onNewTweetSubmitted(String tweetBody){
-        Log.d("DEBUG", "inside onNewTweetSubmitted");
         client.postTweet(tweetBody, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -95,7 +95,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
            //failure
            @Override
            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-               Log.d("FAILURE DEBUG", errorResponse.toString());
+               Log.d("ERROR", errorResponse.toString());
            }
        });
     }

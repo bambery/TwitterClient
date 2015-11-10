@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -28,8 +29,6 @@ public class TwitterClient extends OAuthBaseClient {
     public static final String REST_CONSUMER_KEY = "5rNbRoSJRonvEpjBOPDrzd9fx";
     public static final String REST_CONSUMER_SECRET = "oC04V0QY80mUg2tBWDyLkNvd7iXzFFphxGySKc6QWbIKu1R5o6";
 	public static final String REST_CALLBACK_URL = "x-oauthflow-twitter://cpsimpletweets"; // Change this (here and in manifest)
-
-    private static final int DEFAULT_NUM_TO_FETCH = 25;
 
 	public TwitterClient(Context context) {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
@@ -66,6 +65,7 @@ public class TwitterClient extends OAuthBaseClient {
 
     // get user info about self
     public void getCurrentUser(AsyncHttpResponseHandler handler){
+        Log.d("ERROR", "get current user...?");
         String apiUrl = getApiUrl("account/verify_credentials.json");
         getClient().get(apiUrl, null, handler);
     }

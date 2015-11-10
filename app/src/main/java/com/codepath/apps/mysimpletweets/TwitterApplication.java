@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets;
 
 import android.content.Context;
+import android.util.Log;
 
 /*
  * This is the Android application itself and is used to configure various settings
@@ -21,6 +22,7 @@ public class TwitterApplication extends com.activeandroid.app.Application {
 	}
 
 	public static TwitterClient getRestClient() {
+		Log.d("AGH", "WHY");
 		return (TwitterClient) TwitterClient.getInstance(TwitterClient.class, TwitterApplication.context);
 	}
 }
