@@ -149,8 +149,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     }
 
     public void getMoreTweets(long lastTweetId){
-        Log.d("DEBUG", "inside getmoretweets");
-        client.getLatestTweetsSince(lastTweetId, new JsonHttpResponseHandler() {
+        client.getTweetsAfterMyTweet(lastTweetId, new JsonHttpResponseHandler() {
             // success
 
             @Override
@@ -160,6 +159,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                 //load data model into listview
                 //               ArrayList<Tweet> tweets = Tweet.fromJSONArray(response);
                 aTweets.addAll(Tweet.fromJSONArray(response));
+                aTweets.notifyDataSetChanged();;
             }
 
             //failure
@@ -195,6 +195,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     }
 
     private long getLastTweetId(){
+        Log.d("DEBUG", "last tweet id " + tweets.get(tweets.size() - 1).getUid());
         return (tweets.get(tweets.size() - 1).getUid());
     }
 }

@@ -12,6 +12,7 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+        Log.d("ERROR", "it doesn't look like the app is even trying to start this activity");
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 	}
