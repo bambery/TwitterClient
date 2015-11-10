@@ -36,7 +36,6 @@ public class Tweet {
 
     // Deserialize the JSON
     // Tweet.fromJson
-
     public static Tweet fromJSON(JSONObject jsonObject){
         Tweet tweet = new Tweet();
         try {
@@ -51,6 +50,15 @@ public class Tweet {
         return tweet;
     }
 
+    public static Long getPostedTweetId(JSONObject jsonObject){
+        Long postedTweetId = null;
+        try {
+            postedTweetId = jsonObject.getLong("id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return postedTweetId;
+    }
     //input jsonarray of tweet items, output a list of tweets
     public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
         ArrayList<Tweet> tweets = new ArrayList<>();

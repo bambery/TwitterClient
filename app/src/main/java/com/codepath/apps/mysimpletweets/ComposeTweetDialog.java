@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -21,6 +22,10 @@ public class ComposeTweetDialog extends DialogFragment {
     // dialog doc: http://developer.android.com/reference/android/support/v4/app/DialogFragment.html#setStyle(int, int)
     // custom cursor color in edittext: http://code2care.org/pages/how-to-change-android-edittext-cursor-color/
 
+    public interface OnSubmitNewTweetListener {
+        void onNewTweetSubmitted(String tweetBody);
+    }
+    private OnSubmitNewTweetListener listener;
 
     private ImageView ivProfilePhoto;
     private Button btnNewTweet;
@@ -28,6 +33,18 @@ public class ComposeTweetDialog extends DialogFragment {
     private TextView tvScreenname;
     private EditText etNewTweet;
     private ImageView ivComposeClose;
+
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        listener = (OnSubmitNewTweetListener) activity;
+    }
+
+    @Override
+    public void onDetach() {
+        listener = null;
+        super.onDetach();
+    }
 
     public ComposeTweetDialog() {
         // empty constructor is needed?
@@ -53,7 +70,26 @@ public class ComposeTweetDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_compose_tweet, container);
+        View v = inflater.inflate(R.layout.fragment_compose_tweet, container);
+
+        // x to close dialog
+        ImageView ivClose = (ImageView) v.findViewById(R.id.ivComposeClose);
+        ivClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getDialog().dismiss();
+            }
+        });
+
+        Button btn = (Button) v.findViewById(R.id.btnComposeNewTweet);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                listener.onNewTweetSubmitted(etNewTweet.getText().toString());
+                //getDialog().dismiss();
+            }
+        });
+        return v;
     }
 
     @Override
@@ -85,5 +121,6 @@ public class ComposeTweetDialog extends DialogFragment {
     }
     */
     }
+
 
 }

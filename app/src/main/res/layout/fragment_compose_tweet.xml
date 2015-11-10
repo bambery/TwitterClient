@@ -22,12 +22,13 @@
         android:text="@string/btn_tweet"
         android:id="@+id/btnComposeNewTweet"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="210dp"
-        android:layout_marginStart="210dp"
         android:layout_alignParentRight="true"
         android:singleLine="true"
         android:background="@drawable/button_bg_rounded_corners"
         android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:padding="0dp"
+        android:layout_margin="0dp"
         />
 
     <ImageView

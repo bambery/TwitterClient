@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.codepath.apps.mysimpletweets.models.User;
@@ -20,7 +21,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialog.OnSubmitNewTweetListener {
 
     private TwitterClient client;
     private ArrayList<Tweet> tweets;
@@ -66,6 +67,39 @@ public class TimelineActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.action_bar_timeline, menu);
         return true;
     }
+
+    @Override
+    public void onNewTweetSubmitted(String tweetBody){
+        client.postTweet(tweetBody, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                Long newTweetId = Tweet.getPostedTweetId(response);
+
+            }
+//                            Toast.makeText(TimelineActivity.this, "success tweeting", Toast.LENGTH_SHORT).show();
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Toast.makeText(TimelineActivity.this, "Failed posting tweet", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+            /*
+                 client.postStatus(body, new JsonHttpResponseHandler() {
+                        // 3. On success, update the tweet object with the proper attributes
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                            tweet.setWithJSON(response);
+                            // Save the tweet
+                            tweet.save();
+//                            Toast.makeText(TimelineActivity.this, "success tweeting", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                            Toast.makeText(TimelineActivity.this, "Failed posting tweet", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+             */
 
     public void setCurrentUser(){
        client.getCurrentUser(new JsonHttpResponseHandler() {

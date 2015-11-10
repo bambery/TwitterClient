@@ -1,6 +1,5 @@
 package com.codepath.apps.mysimpletweets;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,6 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
     }
 
     // Override and setup custom template
-    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // 1. get tweet
