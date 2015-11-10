@@ -1,8 +1,11 @@
 package com.codepath.apps.mysimpletweets;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.ListView;
 
 import com.codepath.apps.mysimpletweets.models.Tweet;
@@ -20,14 +23,24 @@ public class TimelineActivity extends AppCompatActivity {
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter aTweets;
     private ListView lvTweets;
+    private Toolbar myToolbar;
+
+    // change title color: http://developer.android.com/reference/android/widget/Toolbar.html#setTitleTextColor(int)
+    // getting color int: http://stackoverflow.com/questions/31842983/getresources-getcolor-is-deprecated
+    // getting rid of overflow menu icon: http://stackoverflow.com/questions/28291001/how-does-one-remove-default-toolbar-menu-items-and-replace-with-different-icons
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        // set appbar title
-        setTitle(R.string.title_activity_timeline);
-        //find the listview
+        // set custom toolbar
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle(R.string.title_activity_timeline);
+
+        myToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
+        myToolbar.inflateMenu(R.menu.action_bar_timeline);
+
+        //setSupportActionBar(myToolbar);
 
         //create the arraylist from data source
         tweets = new ArrayList<>();
@@ -49,9 +62,16 @@ public class TimelineActivity extends AppCompatActivity {
         populateTimeline();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        //Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.action_bar_timeline, menu);
+        return true;
+    }
+
     //send api request to get the timeline json
     // fill listview by creating the tweet objects from the json
-    private void populateTimeline(){
+    private void populateTimeline() {
         client.getInitialHomeTimeline(new JsonHttpResponseHandler() {
             // success
 
