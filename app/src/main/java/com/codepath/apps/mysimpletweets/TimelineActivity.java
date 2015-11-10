@@ -51,7 +51,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         lvTweets.setOnScrollListener(new EndlessScrollListener() {
             @Override
             public boolean onLoadMore(int page, int totalItemsCount) {
-                getMoreTweets();
+                getMoreTweets(getLastTweetId());
                 return true; // ONLY if more data is actually being loaded; false otherwise.
             }
         });
@@ -70,50 +70,34 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
     @Override
     public void onNewTweetSubmitted(String tweetBody){
+        Log.d("DEBUG", "inside onNewTweetSubmitted");
         client.postTweet(tweetBody, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Long newTweetId = Tweet.getPostedTweetId(response);
-
+                refreshAfterNewTweet(newTweetId);
             }
-//                            Toast.makeText(TimelineActivity.this, "success tweeting", Toast.LENGTH_SHORT).show();
+
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 Toast.makeText(TimelineActivity.this, "Failed posting tweet", Toast.LENGTH_SHORT).show();
             }
         });
     }
-            /*
-                 client.postStatus(body, new JsonHttpResponseHandler() {
-                        // 3. On success, update the tweet object with the proper attributes
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                            tweet.setWithJSON(response);
-                            // Save the tweet
-                            tweet.save();
-//                            Toast.makeText(TimelineActivity.this, "success tweeting", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                            Toast.makeText(TimelineActivity.this, "Failed posting tweet", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-             */
 
     public void setCurrentUser(){
        client.getCurrentUser(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                User.setCurrentUser(User.fromJSON(response));
-            }
+           @Override
+           public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+               User.setCurrentUser(User.fromJSON(response));
+           }
 
            //failure
            @Override
            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                Log.d("FAILURE DEBUG", errorResponse.toString());
            }
-        });
+       });
     }
 
     public void setupMyToolbar(){
@@ -127,7 +111,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
                 if (id == R.id.action_new_tweet) {
-                    //Toast.makeText(TimelineActivity.this, "Toasty", Toast.LENGTH_SHORT).show();
                     showNewTweetDialog();
                     return true;
                 }
@@ -165,8 +148,9 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         });
     }
 
-    public void getMoreTweets(){
-        client.getLatestTweetsSince(getLastTweetId(), new JsonHttpResponseHandler(){
+    public void getMoreTweets(long lastTweetId){
+        Log.d("DEBUG", "inside getmoretweets");
+        client.getLatestTweetsSince(lastTweetId, new JsonHttpResponseHandler() {
             // success
 
             @Override
@@ -184,6 +168,30 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                 Log.d("FAILURE DEBUG", errorResponse.toString());
             }
         });
+    }
+
+    private void refreshAfterNewTweet(long myNewTweetId){
+        aTweets.clear();
+        client.getTweetsAfterMyTweet(myNewTweetId, new JsonHttpResponseHandler() {
+            // success
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                //deserialize json
+                //create models and add to adapter
+                //load data model into listview
+                //               ArrayList<Tweet> tweets = Tweet.fromJSONArray(response);
+                // should only be one tweet here
+                aTweets.addAll(Tweet.fromJSONArray(response));
+            }
+
+            //failure
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("FAILURE DEBUG", errorResponse.toString());
+            }
+        });
+        aTweets.notifyDataSetChanged();
     }
 
     private long getLastTweetId(){

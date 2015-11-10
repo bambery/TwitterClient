@@ -29,12 +29,13 @@ public class TwitterClient extends OAuthBaseClient {
     public static final String REST_CONSUMER_SECRET = "oC04V0QY80mUg2tBWDyLkNvd7iXzFFphxGySKc6QWbIKu1R5o6";
 	public static final String REST_CALLBACK_URL = "x-oauthflow-twitter://cpsimpletweets"; // Change this (here and in manifest)
 
+    private static final int DEFAULT_NUM_TO_FETCH = 25;
+
 	public TwitterClient(Context context) {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
-    // get the home timeline
-    private void getHomeTimeline(long lastTweetId, AsyncHttpResponseHandler handler ) {
+    private void getHomeTimeline(long lastTweetId, AsyncHttpResponseHandler handler ){
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         // specify params
         RequestParams params = new RequestParams();
@@ -44,12 +45,23 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().get(apiUrl, params, handler);
     }
 
+
     public void getInitialHomeTimeline(AsyncHttpResponseHandler handler){
         getHomeTimeline(1, handler);
     }
 
     public void getLatestTweetsSince( long lastTweetId, AsyncHttpResponseHandler handler){
         getHomeTimeline(lastTweetId, handler);
+    }
+
+    public void getTweetsAfterMyTweet(long myTweetId, AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("statuses/home_timeline.json");
+        // specify params
+        RequestParams params = new RequestParams();
+        params.put("count", 25); // grab 25 tweets
+        params.put("max_id", myTweetId); // oldest id of tweet to grab
+        //execute request
+        getClient().get(apiUrl, params, handler);
     }
 
     // get user info about self
@@ -65,14 +77,4 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().post(apiUrl, params, handler);
     }
 
-    //composing a tweet
-
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
-	 * 2. Define the parameters to pass to the request (query or body)
-	 *    i.e RequestParams params = new RequestParams("foo", "bar");
-	 * 3. Define the request method and make a call to the client
-	 *    i.e client.get(apiUrl, params, handler);
-	 *    i.e client.post(apiUrl, params, handler);
-	 */
 }

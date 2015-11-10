@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -82,11 +83,13 @@ public class ComposeTweetDialog extends DialogFragment {
         });
 
         Button btn = (Button) v.findViewById(R.id.btnComposeNewTweet);
+        etNewTweet = (EditText) v.findViewById(R.id.etComposeNewTweet);
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
                 listener.onNewTweetSubmitted(etNewTweet.getText().toString());
-                //getDialog().dismiss();
+                getDialog().dismiss();
             }
         });
         return v;
@@ -105,6 +108,9 @@ public class ComposeTweetDialog extends DialogFragment {
         tvScreenname.setText(getContext().getString(R.string.at_sign) + getArguments().getString("screenname"));
         ivComposeClose = (ImageView) view.findViewById(R.id.ivComposeClose);
         ivComposeClose.setColorFilter(ContextCompat.getColor(getContext(), R.color.twitter_light_blue));
+        etNewTweet = (EditText) view.findViewById(R.id.etComposeNewTweet);
+        etNewTweet.requestFocus();
+        getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         // Get field from view
 
