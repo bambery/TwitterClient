@@ -33,7 +33,7 @@ public class TwitterClient extends OAuthBaseClient {
         super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
-    // get the hotel timeline
+    // get the home timeline
     private void getHomeTimeline(long lastTweetId, AsyncHttpResponseHandler handler ) {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         // specify params
@@ -50,6 +50,12 @@ public class TwitterClient extends OAuthBaseClient {
 
     public void getLatestTweetsSince( long lastTweetId, AsyncHttpResponseHandler handler){
         getHomeTimeline(lastTweetId, handler);
+    }
+
+    // get user info about self
+    public void getCurrentUser(AsyncHttpResponseHandler handler){
+        String apiUrl = getApiUrl("account/verify_credentials.json");
+        getClient().get(apiUrl, null, handler);
     }
 
     //composing a tweet

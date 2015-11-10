@@ -9,6 +9,7 @@ public class User {
     private long uid;
     private String screenName;
     private String profileImageUrl;
+    private static User currentUser;
 
     public String getName() {
         return name;
@@ -37,5 +38,13 @@ public class User {
             e.printStackTrace();
         }
         return u;
+    }
+
+    public static User getCurrentUser(){
+        return User.currentUser;
+    }
+
+    public static void setCurrentUser(User current){
+        User.currentUser = current;
     }
 }

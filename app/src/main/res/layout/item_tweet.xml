@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Billy"
-        android:id="@+id/tvUsername"
+        android:id="@+id/tvComposeUsername"
         android:layout_toRightOf="@+id/ivProfileImage"
         android:layout_alignTop="@+id/ivProfileImage"
         android:maxLines="1"
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:text="New Texty stuff"
         android:id="@+id/tvBody"
-        android:layout_below="@+id/tvUsername"
+        android:layout_below="@+id/tvComposeUsername"
         android:layout_toRightOf="@+id/ivProfileImage"
         />
 
@@ -38,8 +38,8 @@
         android:text="\@something"
         android:id="@+id/tvScreenName"
         android:layout_above="@+id/tvBody"
-        android:layout_toRightOf="@+id/tvUsername"
-        android:layout_toEndOf="@+id/tvUsername"
+        android:layout_toRightOf="@+id/tvComposeUsername"
+        android:layout_toEndOf="@+id/tvComposeUsername"
         android:maxLines="1"/>
 
     <TextView

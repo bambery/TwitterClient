@@ -1,6 +1,7 @@
 package com.codepath.apps.mysimpletweets;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,9 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.codepath.apps.mysimpletweets.models.User;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
@@ -36,23 +37,7 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         // set custom toolbar
-        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        myToolbar.setTitle(R.string.title_activity_timeline);
-        myToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
-        myToolbar.inflateMenu(R.menu.action_bar_timeline);
-        // launch compose tweet activity if button is clicked
-        myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int id = item.getItemId();
-                if (id == R.id.action_new_tweet) {
-                    Toast.makeText(TimelineActivity.this, "Toasty", Toast.LENGTH_SHORT).show();
-                    return true;
-                }
-                return false;
-            }
-        });
-        //setSupportActionBar(myToolbar);
+        setupMyToolbar();
 
         //create the arraylist from data source
         tweets = new ArrayList<>();
@@ -71,6 +56,7 @@ public class TimelineActivity extends AppCompatActivity {
         });
         // connect adapter to listview
         lvTweets.setAdapter(aTweets);
+        setCurrentUser();
         populateTimeline();
     }
 
@@ -79,6 +65,47 @@ public class TimelineActivity extends AppCompatActivity {
         //Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.action_bar_timeline, menu);
         return true;
+    }
+
+    public void setCurrentUser(){
+       client.getCurrentUser(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                User.setCurrentUser(User.fromJSON(response));
+            }
+
+           //failure
+           @Override
+           public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+               Log.d("FAILURE DEBUG", errorResponse.toString());
+           }
+        });
+    }
+
+    public void setupMyToolbar(){
+        myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        myToolbar.setTitle(R.string.title_activity_timeline);
+        myToolbar.setTitleTextColor(ContextCompat.getColor(this, R.color.white));
+        myToolbar.inflateMenu(R.menu.action_bar_timeline);
+        // launch compose tweet activity if button is clicked
+        myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                if (id == R.id.action_new_tweet) {
+                    //Toast.makeText(TimelineActivity.this, "Toasty", Toast.LENGTH_SHORT).show();
+                    showNewTweetDialog();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void showNewTweetDialog(){
+        FragmentManager fm = getSupportFragmentManager();
+        ComposeTweetDialog composeTweetDialog = ComposeTweetDialog.newInstance(User.getCurrentUser());
+        composeTweetDialog.show(fm, "fragment_compose_tweet");
     }
 
     //send api request to get the timeline json
@@ -103,17 +130,6 @@ public class TimelineActivity extends AppCompatActivity {
             }
         });
     }
-
-    /*
-    // Append more data into the adapter
-    public void customLoadMoreDataFromApi(int offset) {
-        // This method probably sends out a network request and appends new data items to your adapter.
-        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
-        // Deserialize API response and then construct new objects to append to the adapter
-
-        client.getMoreTweets();
-    }
-    */
 
     public void getMoreTweets(){
         client.getLatestTweetsSince(getLastTweetId(), new JsonHttpResponseHandler(){

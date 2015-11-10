@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
     }
 
     // Override and setup custom template
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // 1. get tweet
@@ -30,7 +32,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet>{
         }
         // 3. find the subviews to fill with data in the template
         ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
-        TextView tvUsername = (TextView) convertView.findViewById(R.id.tvUsername);
+        TextView tvUsername = (TextView) convertView.findViewById(R.id.tvComposeUsername);
         TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
         TextView tvScreenName = (TextView) convertView.findViewById(R.id.tvScreenName);
         TextView tvTimeSince = (TextView) convertView.findViewById(R.id.tvTimeSince);
