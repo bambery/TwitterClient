@@ -97,6 +97,8 @@ public class ComposeTweetDialog extends DialogFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        //do I need a viewholder for everything?
         super.onViewCreated(view, savedInstanceState);
         ivProfilePhoto = (ImageView) view.findViewById(R.id.ivComposeProfilePhoto);
         ivProfilePhoto.setImageResource(android.R.color.transparent); // good place to set a placeholder while clearing out the old content

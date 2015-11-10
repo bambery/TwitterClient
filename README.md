@@ -2,7 +2,7 @@
 
 **Twitter Client** is an android app that allows a user to view his Twitter timeline and post a new tweet. The app utilizes [Twitter REST API](https://dev.twitter.com/rest/public).
 
-Time spent: **15** hours spent in total maybe?
+Time spent: **15** hours spent in total maybe? Unknown amount of time getting oauth to work
 
 ## User Stories
 
@@ -42,9 +42,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-For the life of me, I can't get oauth to work right now. It hasn't had a problem
-for the entire time I've been working, but as soon as I uninstalled, I can no
-longer even get the app to launch. I'll keep working on it, but I am not able to get it working right now.
+<img src='https://cloud.githubusercontent.com/assets/161639/11058509/3af07f80-8748-11e5-9296-a2d13cc866b0.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
@@ -54,7 +52,9 @@ The hardest part was probably getting the time lapsed formatted properly. Aside
 from that, I just didn't have enough time between finishing last week's
 assignment and still recovering from being sick.
 
-I also just realized I am not using a ViewHolder. I'll fix that and resubmit.
+Also, at some point the run dropdown selected TimelineActivity and I wasted 
+many hours trying to figure out why it was bypassing oauth. Still a lot of 
+debug statements in my code.
 
 ## Open-source libraries used
 
