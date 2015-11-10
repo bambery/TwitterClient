@@ -19,6 +19,7 @@ public class ComposeTweetDialog extends DialogFragment {
 
     // rounded button: http://android--code.blogspot.com/2015/01/android-rounded-corners-button.html
     // dialog doc: http://developer.android.com/reference/android/support/v4/app/DialogFragment.html#setStyle(int, int)
+    // custom cursor color in edittext: http://code2care.org/pages/how-to-change-android-edittext-cursor-color/
 
 
     private ImageView ivProfilePhoto;
